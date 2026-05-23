@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шухрат Бакиев</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0f0f0f;
+    --bg2:#161616;
+    --bg3:#1e1e1e;
+    --text:#e8e4dc;
+    --muted:#8a8480;
+    --accent:#b8a98a;
+    --border:#2a2a2a;
+    --card:#181818;
+  }
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.7}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;border-bottom:1px solid var(--border);background:rgba(15,15,15,0.92);backdrop-filter:blur(12px)}
+  .nav-name{font-size:1rem;font-weight:500;letter-spacing:0.04em;color:var(--text)}
+  .nav-links{display:flex;gap:2.5rem}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.875rem;letter-spacing:0.03em;transition:color 0.2s}
+  .nav-links a:hover{color:var(--accent)}
+
+  /* SECTIONS */
+  section{padding:7rem 4rem;max-width:1100px;margin:0 auto}
+  .section-label{font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2.5rem}
+
+  /* HERO */
+  #hero{min-height:100vh;display:flex;align-items:center;padding-top:8rem;gap:5rem;max-width:1100px;margin:0 auto;padding-left:4rem;padding-right:4rem}
+  .hero-photo{flex-shrink:0;width:260px;height:260px;border-radius:50%;overflow:hidden;border:1px solid var(--border);filter:grayscale(20%)}
+  .hero-photo img{width:100%;height:100%;object-fit:cover}
+  .hero-text h1{font-size:2.8rem;font-weight:400;line-height:1.2;margin-bottom:1.2rem;letter-spacing:-0.01em}
+  .hero-text h1 span{color:var(--accent)}
+  .hero-sub{color:var(--muted);font-size:0.95rem;margin-bottom:1.8rem}
+  .github-link{display:inline-flex;align-items:center;gap:0.6rem;text-decoration:none;color:var(--text);border:1px solid var(--border);padding:0.55rem 1.1rem;border-radius:6px;font-size:0.85rem;transition:border-color 0.2s,color 0.2s}
+  .github-link:hover{border-color:var(--accent);color:var(--accent)}
+  .github-link svg{width:18px;height:18px;fill:currentColor}
+
+  /* ABOUT */
+  #about{border-top:1px solid var(--border)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+  .about-bio p{color:var(--muted);font-size:0.95rem;margin-bottom:1rem;line-height:1.8}
+  .skills-block{margin-top:2rem}
+  .skills-title{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+  .skill-row{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0;border-bottom:1px solid var(--border);font-size:0.9rem}
+  .skill-row:last-child{border-bottom:none}
+  .skill-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  /* PROJECTS */
+  #projects{border-top:1px solid var(--border)}
+  .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+  .project-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:2rem;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color 0.25s}
+  .project-card:hover{border-color:var(--accent)}
+  .proj-num{font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:1rem}
+  .proj-title{font-size:1rem;font-weight:500;margin-bottom:0.4rem;color:var(--text)}
+  .proj-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;flex:1}
+  .proj-link{display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.2rem;font-size:0.78rem;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.2s}
+  .proj-link:hover{border-color:var(--accent)}
+  .proj-link-placeholder{margin-top:1.2rem;font-size:0.78rem;color:var(--border);font-style:italic}
+
+  /* CONTACT */
+  #contact{border-top:1px solid var(--border);padding-bottom:6rem}
+  .contact-intro{font-size:2rem;font-weight:400;line-height:1.3;max-width:520px;margin-bottom:3rem;color:var(--text)}
+  .contact-intro span{color:var(--accent)}
+  .contact-links{display:flex;flex-direction:column;gap:0;max-width:480px}
+  .contact-item{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;border-bottom:1px solid var(--border)}
+  .contact-label{font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+  .contact-val{font-size:0.9rem;color:var(--text);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.5rem}
+  .contact-val:hover{color:var(--accent)}
+  .arrow{font-size:0.8rem;color:var(--muted)}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto}
+  footer p{font-size:0.75rem;color:var(--muted)}
+
+  @media(max-width:768px){
+    nav{padding:1rem 1.5rem}
+    section,#hero,footer{padding-left:1.5rem;padding-right:1.5rem}
+    #hero{flex-direction:column;gap:2.5rem;padding-top:7rem}
+    .hero-photo{width:180px;height:180px}
+    .hero-text h1{font-size:2rem}
+    .about-grid{grid-template-columns:1fr}
+    .projects-grid{grid-template-columns:1fr}
+    footer{flex-direction:column;gap:0.5rem;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-name">Шухрат Бакиев</div>
+  <div class="nav-links">
+    <a href="#about">Обо мне</a>
+    <a href="#projects">Проекты</a>
+    <a href="#contact">Контакт</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-photo">
+    <img src="data:image/jpeg;base64,PHOTO_PLACEHOLDER" alt="Шухрат Бакиев" id="heroImg">
+  </div>
+  <div class="hero-text">
+    <p class="section-label">Портфолио</p>
+    <h1>Привет, меня<br>зовут <span>Шухрат!</span></h1>
+    <p class="hero-sub">Выпускник КазГАСА, факультет «Архитектура».</p>
+    <a class="github-link" href="https://github.com/bakiev28" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+      bakiev28 (Шухрат)
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">Обо мне</p>
+  <div class="about-grid">
+    <div class="about-bio">
+      <p>Родом из Алматы. Свою деятельность начал в 2016 году в сфере 3D‑визуализации, где получил практический опыт работы с архитектурными и дизайнерскими проектами.</p>
+      <p>В 2017 году переехал в Гуанчжоу по программе Foundation. Международный опыт и обучение в другой культурной среде помогли развить гибкость мышления, самостоятельность и способность быстро адаптироваться к новым условиям.</p>
+      <p>После начала пандемии COVID‑19 вернулся в Алматы, где продолжил профессиональную деятельность в сфере 3D‑визуализации: работал в найме и параллельно развивал фриланс‑проекты.</p>
+      <p>Также пробовал себя в предпринимательстве, что дало ценный опыт в управлении проектами, принятии решений и понимании бизнес‑процессов.</p>
+      <p>С середины 2025 года начал изучать искусственный интеллект и современные AI‑инструменты. С 2026 года углублённо развиваюсь в направлении AI, объединяя творческий подход, визуальное мышление и технические навыки.</p>
+      <p style="color:var(--accent);margin-top:1.2rem;font-size:0.9rem">В настоящее время ищу работу на полную ставку в сфере AI.</p>
+    </div>
+    <div>
+      <div class="skills-block">
+        <p class="skills-title">Стек</p>
+        <div class="skill-row"><span>Blueprint</span><span class="skill-dot"></span></div>
+        <div class="skill-row"><span>C++</span><span class="skill-dot"></span></div>
+        <div class="skill-row"><span>Unreal Engine 5</span><span class="skill-dot"></span></div>
+        <div class="skill-row"><span>3ds Max</span><span class="skill-dot"></span></div>
+        <div class="skill-row"><span>ComfyUI</span><span class="skill-dot"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">Проекты</p>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div>
+        <p class="proj-num">01</p>
+        <p class="proj-title">Проект</p>
+        <p class="proj-desc">Вставьте описание вашего проекта здесь.</p>
+      </div>
+      <p class="proj-link-placeholder">← добавьте ссылку</p>
+    </div>
+    <div class="project-card">
+      <div>
+        <p class="proj-num">02</p>
+        <p class="proj-title">Проект</p>
+        <p class="proj-desc">Вставьте описание вашего проекта здесь.</p>
+      </div>
+      <p class="proj-link-placeholder">← добавьте ссылку</p>
+    </div>
+    <div class="project-card">
+      <div>
+        <p class="proj-num">03</p>
+        <p class="proj-title">Проект</p>
+        <p class="proj-desc">Вставьте описание вашего проекта здесь.</p>
+      </div>
+      <p class="proj-link-placeholder">← добавьте ссылку</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">Контакт</p>
+  <p class="contact-intro">Давайте<br><span>работать вместе.</span></p>
+  <div class="contact-links">
+    <div class="contact-item">
+      <span class="contact-label">Почта</span>
+      <a class="contact-val" href="mailto:your@email.com">your@email.com <span class="arrow">↗</span></a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">LinkedIn</span>
+      <a class="contact-val" href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener">linkedin.com/in/yourprofile <span class="arrow">↗</span></a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">GitHub</span>
+      <a class="contact-val" href="https://github.com/bakiev28" target="_blank" rel="noopener">github.com/bakiev28 <span class="arrow">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Шухрат Бакиев</p>
+  <p>Астана, Казахстан</p>
+</footer>
+
+<script>
+  const img = document.getElementById('heroImg');
+  img.onerror = function(){
+    const canvas = document.createElement('canvas');
+    canvas.width = 260; canvas.height = 260;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#1e1e1e';
+    ctx.fillRect(0,0,260,260);
+    ctx.fillStyle = '#b8a98a';
+    ctx.font = '500 64px Inter,system-ui,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('ШБ', 130, 130);
+    img.src = canvas.toDataURL();
+  };
+  img.src = '';
+
+  const hero = document.getElementById('hero');
+  const uploaded = sessionStorage.getItem('heroPhoto');
+  if(uploaded){ document.getElementById('heroImg').src = uploaded; }
+  else { document.getElementById('heroImg').src = ''; }
+</script>
+
+</body>
+</html>
