@@ -3,97 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Шухрат Бакиев</title>
+<title>Шухрат Бакиев — AI / 3D Portfolio</title>
+<meta name="description" content="Шухрат Бакиев — выпускник КазГАСА (Архитектура), специалист по 3D-визуализации и AI. Портфолио проектов.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
-    --bg:#0f0f0f;
-    --bg2:#161616;
-    --bg3:#1e1e1e;
-    --text:#e8e4dc;
-    --muted:#8a8480;
-    --accent:#b8a98a;
-    --border:#2a2a2a;
-    --card:#181818;
+    --bg:#0c0c0d;
+    --bg2:#151517;
+    --text:#ece8e0;
+    --muted:#8b857d;
+    --accent:#cdb98f;
+    --accent2:#e7d3a8;
+    --accent-soft:rgba(205,185,143,0.12);
+    --border:#26262a;
+    --card:rgba(24,24,27,0.55);
+    --grad:linear-gradient(120deg,#e7d3a8 0%,#cdb98f 45%,#9c8f9e 100%);
   }
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.7}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden}
+
+  /* DECOR — animated aurora blobs + grain */
+  .aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.5;mix-blend-mode:screen}
+  .blob.b1{width:520px;height:520px;background:radial-gradient(circle,#5a4f3a,transparent 70%);top:-140px;left:-120px;animation:drift1 22s ease-in-out infinite}
+  .blob.b2{width:460px;height:460px;background:radial-gradient(circle,#3a3a52,transparent 70%);top:30%;right:-160px;animation:drift2 26s ease-in-out infinite}
+  .blob.b3{width:400px;height:400px;background:radial-gradient(circle,#4a3f3a,transparent 70%);bottom:-160px;left:25%;animation:drift3 30s ease-in-out infinite}
+  @keyframes drift1{50%{transform:translate(120px,80px) scale(1.15)}}
+  @keyframes drift2{50%{transform:translate(-100px,60px) scale(1.1)}}
+  @keyframes drift3{50%{transform:translate(60px,-90px) scale(1.2)}}
+  .grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* SCROLL PROGRESS */
+  #progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;background:var(--grad);box-shadow:0 0 10px rgba(205,185,143,0.6)}
 
   /* NAV */
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;border-bottom:1px solid var(--border);background:rgba(15,15,15,0.92);backdrop-filter:blur(12px)}
-  .nav-name{font-size:1rem;font-weight:500;letter-spacing:0.04em;color:var(--text)}
-  .nav-links{display:flex;gap:2.5rem}
-  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.875rem;letter-spacing:0.03em;transition:color 0.2s}
-  .nav-links a:hover{color:var(--accent)}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 4rem;background:rgba(12,12,13,0.6);backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid transparent;transition:border-color .3s,padding .3s,background .3s}
+  nav.scrolled{border-bottom-color:var(--border);padding-top:.85rem;padding-bottom:.85rem;background:rgba(12,12,13,0.82)}
+  .nav-name{font-family:'Space Grotesk',sans-serif;font-size:1.02rem;font-weight:600;letter-spacing:0.02em;display:flex;align-items:center;gap:.6rem}
+  .nav-name .mark{width:9px;height:9px;border-radius:50%;background:var(--grad);box-shadow:0 0 12px var(--accent)}
+  .nav-links{display:flex;gap:2.4rem;align-items:center}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;letter-spacing:0.03em;position:relative;transition:color 0.25s;padding:.2rem 0}
+  .nav-links a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--grad);transition:width .28s ease}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a:hover::after{width:100%}
 
   /* SECTIONS */
-  section{padding:7rem 4rem;max-width:1100px;margin:0 auto}
-  .section-label{font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2.5rem}
+  section{padding:7rem 4rem;max-width:1140px;margin:0 auto}
+  .section-label{font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:2.6rem;display:flex;align-items:center;gap:.8rem}
+  .section-label::before{content:'';width:28px;height:1px;background:var(--accent);opacity:.6}
 
   /* HERO */
-  #hero{min-height:100vh;display:flex;align-items:center;padding-top:8rem;gap:5rem;max-width:1100px;margin:0 auto;padding-left:4rem;padding-right:4rem}
-  .hero-photo{flex-shrink:0;width:260px;height:260px;border-radius:50%;overflow:hidden;border:1px solid var(--border);filter:grayscale(20%)}
-  .hero-photo img{width:100%;height:100%;object-fit:cover}
-  .hero-text h1{font-size:2.8rem;font-weight:400;line-height:1.2;margin-bottom:1.2rem;letter-spacing:-0.01em}
-  .hero-text h1 span{color:var(--accent)}
-  .hero-sub{color:var(--muted);font-size:0.95rem;margin-bottom:1.8rem}
-  .github-link{display:inline-flex;align-items:center;gap:0.6rem;text-decoration:none;color:var(--text);border:1px solid var(--border);padding:0.55rem 1.1rem;border-radius:6px;font-size:0.85rem;transition:border-color 0.2s,color 0.2s}
-  .github-link:hover{border-color:var(--accent);color:var(--accent)}
-  .github-link svg{width:18px;height:18px;fill:currentColor}
+  #hero{min-height:100vh;display:flex;align-items:center;gap:5.5rem;max-width:1140px;margin:0 auto;padding:10rem 4rem 5rem}
+  .hero-photo{position:relative;flex-shrink:0;width:300px;height:300px}
+  .hero-photo .ring{position:absolute;inset:-14px;border-radius:50%;background:conic-gradient(from 0deg,#e7d3a8,#9c8f9e,#5a4f3a,#e7d3a8);filter:blur(2px);opacity:.65;animation:spin 14s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .hero-photo .frame{position:absolute;inset:0;border-radius:50%;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 30px 80px rgba(0,0,0,0.55)}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(1.05);transition:filter .5s,transform .5s}
+  .hero-photo:hover img{filter:grayscale(0%);transform:scale(1.04)}
+  .hero-photo .badge{position:absolute;bottom:8px;right:-6px;display:flex;align-items:center;gap:.45rem;background:rgba(18,18,20,0.92);border:1px solid var(--border);backdrop-filter:blur(8px);padding:.45rem .8rem;border-radius:999px;font-size:0.72rem;color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .hero-photo .badge .pulse{width:7px;height:7px;border-radius:50%;background:#5fd38a;box-shadow:0 0 0 0 rgba(95,211,138,.7);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 7px rgba(95,211,138,0)}100%{box-shadow:0 0 0 0 rgba(95,211,138,0)}}
+  .hero-text{flex:1}
+  .hero-text h1{font-family:'Space Grotesk',sans-serif;font-size:3.4rem;font-weight:600;line-height:1.08;margin-bottom:1.4rem;letter-spacing:-0.02em}
+  .hero-text h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero-sub{color:var(--muted);font-size:1rem;margin-bottom:2rem;max-width:440px}
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:0.6rem;text-decoration:none;font-size:0.88rem;padding:0.7rem 1.3rem;border-radius:999px;transition:transform .2s,box-shadow .25s,border-color .25s,color .25s}
+  .btn-primary{color:#15140f;background:var(--grad);font-weight:600;box-shadow:0 10px 30px rgba(205,185,143,0.22)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(205,185,143,0.34)}
+  .btn-ghost{color:var(--text);border:1px solid var(--border)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+  .btn svg{width:18px;height:18px;fill:currentColor}
+  .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:.7}
+  .scroll-hint .line{width:1px;height:34px;background:linear-gradient(var(--accent),transparent);animation:scrolldot 1.8s ease-in-out infinite}
+  @keyframes scrolldot{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
 
   /* ABOUT */
   #about{border-top:1px solid var(--border)}
-  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
-  .about-bio p{color:var(--muted);font-size:0.95rem;margin-bottom:1rem;line-height:1.8}
-  .skills-block{margin-top:2rem}
-  .skills-title{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
-  .skill-row{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0;border-bottom:1px solid var(--border);font-size:0.9rem}
+  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:4rem;align-items:start}
+  .about-bio p{color:var(--muted);font-size:0.96rem;margin-bottom:1rem;line-height:1.85}
+  .about-bio .highlight{color:var(--accent);margin-top:1.4rem;font-size:0.92rem;display:inline-flex;align-items:center;gap:.6rem}
+  .about-bio .highlight::before{content:'';width:7px;height:7px;border-radius:50%;background:#5fd38a;box-shadow:0 0 10px #5fd38a}
+  .skills-block{position:sticky;top:6rem;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;backdrop-filter:blur(10px)}
+  .skills-title{font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1.3rem}
+  .skill-row{padding:0.7rem 0;border-bottom:1px solid var(--border);font-size:0.9rem}
   .skill-row:last-child{border-bottom:none}
-  .skill-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .skill-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+  .skill-head span:last-child{font-size:.72rem;color:var(--muted)}
+  .skill-bar{height:3px;border-radius:3px;background:var(--border);overflow:hidden}
+  .skill-bar i{display:block;height:100%;width:0;background:var(--grad);border-radius:3px;transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
 
   /* PROJECTS */
   #projects{border-top:1px solid var(--border)}
-  .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-  .project-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:2rem;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;transition:border-color 0.25s}
-  .project-card:hover{border-color:var(--accent)}
-  .proj-num{font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:1rem}
-  .proj-title{font-size:1rem;font-weight:500;margin-bottom:0.4rem;color:var(--text)}
-  .proj-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;flex:1}
-  .proj-link{display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.2rem;font-size:0.78rem;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color 0.2s}
-  .proj-link:hover{border-color:var(--accent)}
-  .proj-link-placeholder{margin-top:1.2rem;font-size:0.78rem;color:var(--border);font-style:italic}
+  .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
+  .project-card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;color:inherit;overflow:hidden;backdrop-filter:blur(10px);transition:transform .3s,border-color .3s,box-shadow .3s}
+  .project-card::before{content:'';position:absolute;inset:0;background:radial-gradient(500px circle at var(--mx,50%) var(--my,0%),var(--accent-soft),transparent 40%);opacity:0;transition:opacity .35s}
+  .project-card:hover{transform:translateY(-5px);border-color:rgba(205,185,143,0.45);box-shadow:0 24px 50px rgba(0,0,0,0.45)}
+  .project-card:hover::before{opacity:1}
+  .proj-watermark{position:absolute;top:-10px;right:14px;font-family:'Space Grotesk',sans-serif;font-size:5rem;font-weight:700;color:rgba(255,255,255,0.035);line-height:1}
+  .proj-num{position:relative;font-size:0.7rem;color:var(--accent);letter-spacing:0.14em;margin-bottom:1rem}
+  .proj-title{position:relative;font-family:'Space Grotesk',sans-serif;font-size:1.18rem;font-weight:600;margin-bottom:0.5rem}
+  .proj-desc{position:relative;font-size:0.84rem;color:var(--muted);line-height:1.65;flex:1}
+  .proj-link{position:relative;display:inline-flex;align-items:center;gap:0.45rem;margin-top:1.4rem;font-size:0.8rem;color:var(--accent);font-weight:500}
+  .proj-link .arrow{display:inline-block;transition:transform .25s}
+  .project-card:hover .proj-link .arrow{transform:translate(3px,-3px)}
 
   /* CONTACT */
-  #contact{border-top:1px solid var(--border);padding-bottom:6rem}
-  .contact-intro{font-size:2rem;font-weight:400;line-height:1.3;max-width:520px;margin-bottom:3rem;color:var(--text)}
-  .contact-intro span{color:var(--accent)}
-  .contact-links{display:flex;flex-direction:column;gap:0;max-width:480px}
-  .contact-item{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;border-bottom:1px solid var(--border)}
-  .contact-label{font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
-  .contact-val{font-size:0.9rem;color:var(--text);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.5rem}
-  .contact-val:hover{color:var(--accent)}
-  .arrow{font-size:0.8rem;color:var(--muted)}
+  #contact{border-top:1px solid var(--border);padding-bottom:5rem}
+  .contact-intro{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:600;line-height:1.2;max-width:620px;margin-bottom:3rem;letter-spacing:-0.02em}
+  .contact-intro span{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .contact-links{display:flex;flex-direction:column;max-width:560px}
+  .contact-item{display:flex;align-items:center;justify-content:space-between;padding:1.15rem 0;border-bottom:1px solid var(--border);text-decoration:none;transition:padding-left .25s}
+  .contact-item:hover{padding-left:.6rem}
+  .contact-label{font-size:0.74rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+  .contact-val{font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:0.5rem;transition:color .25s}
+  .contact-item:hover .contact-val{color:var(--accent)}
+  .contact-val .arrow{transition:transform .25s}
+  .contact-item:hover .contact-val .arrow{transform:translate(3px,-3px)}
 
   /* FOOTER */
-  footer{border-top:1px solid var(--border);padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto}
-  footer p{font-size:0.75rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:1.6rem 4rem;display:flex;justify-content:space-between;align-items:center;max-width:1140px;margin:0 auto}
+  footer p{font-size:0.74rem;color:var(--muted)}
 
-  @media(max-width:768px){
-    nav{padding:1rem 1.5rem}
-    section,#hero,footer{padding-left:1.5rem;padding-right:1.5rem}
-    #hero{flex-direction:column;gap:2.5rem;padding-top:7rem}
-    .hero-photo{width:180px;height:180px}
-    .hero-text h1{font-size:2rem}
-    .about-grid{grid-template-columns:1fr}
+  /* REVEAL ANIMATION */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:860px){
+    nav{padding:1rem 1.4rem}
+    section,footer{padding-left:1.4rem;padding-right:1.4rem}
+    #hero{flex-direction:column;gap:2.8rem;padding:8rem 1.4rem 5rem;text-align:center}
+    .hero-photo{width:230px;height:230px}
+    .hero-text h1{font-size:2.4rem}
+    .hero-sub{margin-left:auto;margin-right:auto}
+    .hero-cta{justify-content:center}
+    .nav-links{gap:1.3rem}
+    .about-grid{grid-template-columns:1fr;gap:2.5rem}
+    .skills-block{position:static}
     .projects-grid{grid-template-columns:1fr}
+    .contact-intro{font-size:1.7rem}
     footer{flex-direction:column;gap:0.5rem;text-align:center}
+    .scroll-hint{display:none}
   }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-name">Шухрат Бакиев</div>
+<div class="aurora"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+<div class="grain"></div>
+<div id="progress"></div>
+
+<nav id="nav">
+  <div class="nav-name"><span class="mark"></span>Шухрат Бакиев</div>
   <div class="nav-links">
     <a href="#about">Обо мне</a>
     <a href="#projects">Проекты</a>
@@ -103,41 +167,48 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-photo">
-    <img src="HeroShot.jpg" alt="Шухрат Бакиев" id="heroImg"> 
-
+  <div class="hero-photo reveal">
+    <div class="ring"></div>
+    <div class="frame">
+      <img src="img/HeroShot.jpg" alt="Шухрат Бакиев" id="heroImg">
+    </div>
+    <div class="badge"><span class="pulse"></span>Открыт к работе</div>
   </div>
   <div class="hero-text">
-    <p class="section-label">Портфолио</p>
-    <h1>Привет, меня<br>зовут <span>Шухрат!</span></h1>
-    <p class="hero-sub">Выпускник КазГАСА, факультет «Архитектура».</p>
-    <a class="github-link" href="https://github.com/bakiev28" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
-      bakiev28 (Шухрат)
-    </a>
+    <p class="section-label reveal">Портфолио</p>
+    <h1 class="reveal">Привет, меня<br>зовут <span>Шухрат!</span></h1>
+    <p class="hero-sub reveal">Выпускник КазГАСА, факультет «Архитектура». Специалист по 3D-визуализации, развиваюсь в направлении AI и творческих технологий.</p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-primary" href="#projects">Смотреть проекты</a>
+      <a class="btn btn-ghost" href="https://github.com/bakiev28" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        bakiev28
+      </a>
+    </div>
   </div>
+  <div class="scroll-hint"><span>Scroll</span><span class="line"></span></div>
 </section>
 
 <!-- ABOUT -->
 <section id="about">
-  <p class="section-label">Обо мне</p>
+  <p class="section-label reveal">Обо мне</p>
   <div class="about-grid">
-    <div class="about-bio">
+    <div class="about-bio reveal">
       <p>Родом из Алматы. Свою деятельность начал в 2016 году в сфере 3D‑визуализации, где получил практический опыт работы с архитектурными и дизайнерскими проектами.</p>
       <p>В 2017 году переехал в Гуанчжоу по программе Foundation. Международный опыт и обучение в другой культурной среде помогли развить гибкость мышления, самостоятельность и способность быстро адаптироваться к новым условиям.</p>
       <p>После начала пандемии COVID‑19 вернулся в Алматы, где продолжил профессиональную деятельность в сфере 3D‑визуализации: работал в найме и параллельно развивал фриланс‑проекты.</p>
       <p>Также пробовал себя в предпринимательстве, что дало ценный опыт в управлении проектами, принятии решений и понимании бизнес‑процессов.</p>
       <p>С середины 2025 года начал изучать искусственный интеллект и современные AI‑инструменты. С 2026 года углублённо развиваюсь в направлении AI, объединяя творческий подход, визуальное мышление и технические навыки.</p>
-      <p style="color:var(--accent);margin-top:1.2rem;font-size:0.9rem">В настоящее время ищу работу на полную ставку в сфере AI.</p>
+      <p class="highlight">В настоящее время ищу работу на полную ставку в сфере AI.</p>
     </div>
     <div>
-      <div class="skills-block">
-        <p class="skills-title">Стек</p>
-        <div class="skill-row"><span>Blueprint</span><span class="skill-dot"></span></div>
-        <div class="skill-row"><span>C++</span><span class="skill-dot"></span></div>
-        <div class="skill-row"><span>Unreal Engine 5</span><span class="skill-dot"></span></div>
-        <div class="skill-row"><span>3ds Max</span><span class="skill-dot"></span></div>
-        <div class="skill-row"><span>ComfyUI</span><span class="skill-dot"></span></div>
+      <div class="skills-block reveal">
+        <p class="skills-title">Стек / Инструменты</p>
+        <div class="skill-row"><div class="skill-head"><span>Unreal Engine 5</span><span>Advanced</span></div><div class="skill-bar"><i data-w="90%"></i></div></div>
+        <div class="skill-row"><div class="skill-head"><span>3ds Max</span><span>Advanced</span></div><div class="skill-bar"><i data-w="88%"></i></div></div>
+        <div class="skill-row"><div class="skill-head"><span>Blueprint</span><span>Strong</span></div><div class="skill-bar"><i data-w="80%"></i></div></div>
+        <div class="skill-row"><div class="skill-head"><span>ComfyUI / AI</span><span>Strong</span></div><div class="skill-bar"><i data-w="78%"></i></div></div>
+        <div class="skill-row"><div class="skill-head"><span>C++</span><span>Working</span></div><div class="skill-bar"><i data-w="62%"></i></div></div>
       </div>
     </div>
   </div>
@@ -145,59 +216,64 @@
 
 <!-- PROJECTS -->
 <section id="projects">
-  <p class="section-label">Проекты</p>
+  <p class="section-label reveal">Проекты</p>
   <div class="projects-grid">
-    <div class="project-card">
+    <a class="project-card reveal" href="https://bakiev28.github.io/bakiev_sh.github.io/" target="_blank" rel="noopener">
+      <span class="proj-watermark">01</span>
       <div>
-        <p class="proj-num">01</p>
+        <p class="proj-num">01 — WEB</p>
         <p class="proj-title">Портфолио</p>
-        <p class="proj-desc">Адаптивный сайт-портфолио, созданный с использованием VS Code и Claude</p>
+        <p class="proj-desc">Адаптивный сайт-портфолио, созданный с использованием VS Code и Claude.</p>
       </div>
-      <a class="proj-link" href="https://bakiev28.github.io/bakiev_sh.github.io/" target="_blank" rel="noopener">Link <span class="arrow">↗</span></a>
-    </div>
-    <div class="project-card">
+      <span class="proj-link">Открыть <span class="arrow">↗</span></span>
+    </a>
+    <a class="project-card reveal" href="https://archivision-ai-570945309160.asia-southeast1.run.app" target="_blank" rel="noopener">
+      <span class="proj-watermark">02</span>
       <div>
-        <p class="proj-num">02</p>
+        <p class="proj-num">02 — AI APP</p>
         <p class="proj-title">Archivision AI App</p>
-        <p class="proj-desc">Анализатор архитектурных изображений. Позволяет получать JSON промпт с изображения</p>
+        <p class="proj-desc">Анализатор архитектурных изображений. Позволяет получать JSON-промпт с изображения.</p>
       </div>
-      <a class="proj-link" href="https://archivision-ai-570945309160.asia-southeast1.run.app" target="_blank" rel="noopener">Link <span class="arrow">↗</span></a>
-    </div>
-    <div class="project-card">
+      <span class="proj-link">Открыть <span class="arrow">↗</span></span>
+    </a>
+    <a class="project-card reveal" href="https://high-iq-x-content-architect-570945309160.asia-southeast1.run.app" target="_blank" rel="noopener">
+      <span class="proj-watermark">03</span>
       <div>
-        <p class="proj-num">03</p>
+        <p class="proj-num">03 — AGENT</p>
         <p class="proj-title">High-IQ X Content Architect</p>
-        <p class="proj-desc">Полнофункциональная агентная система.Высокоинтеллектуальный специалист по контенту в Twitter/X архитектор контента</p>
+        <p class="proj-desc">Полнофункциональная агентная система. Высокоинтеллектуальный архитектор контента для Twitter/X.</p>
       </div>
-      <a class="proj-link" href="https://high-iq-x-content-architect-570945309160.asia-southeast1.run.app" target="_blank" rel="noopener">Link <span class="arrow">↗</span></a>
-    </div>
-     <div class="project-card">
+      <span class="proj-link">Открыть <span class="arrow">↗</span></span>
+    </a>
+    <a class="project-card reveal" href="https://drive.google.com/drive/folders/1iNNrnL9kf-Vm-JinzwII35XiqMqkcgFq?usp=sharing" target="_blank" rel="noopener">
+      <span class="proj-watermark">04</span>
       <div>
-        <p class="proj-num">04</p>
-        <p class="proj-title">CGI/AI Projects</p>
-        <p class="proj-desc">Мои работы</p>
+        <p class="proj-num">04 — CGI / AI</p>
+        <p class="proj-title">CGI / AI Projects</p>
+        <p class="proj-desc">Подборка моих работ по 3D-визуализации и AI-графике.</p>
       </div>
-      <a class="proj-link" href="https://drive.google.com/drive/folders/1iNNrnL9kf-Vm-JinzwII35XiqMqkcgFq?usp=sharing" target="_blank" rel="noopener">Link <span class="arrow">↗</span></a>
-    </div>
+      <span class="proj-link">Открыть <span class="arrow">↗</span></span>
+    </a>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
-  <p class="section-label">Контакт</p>
-  <div class="contact-links">
-    <div class="contact-item">
+  <p class="section-label reveal">Контакт</p>
+  <h2 class="contact-intro reveal">Давайте создадим <span>что-то значимое</span> вместе.</h2>
+  <div class="contact-links reveal">
+    <a class="contact-item" href="mailto:shukhratbakiyev@gmail.com">
       <span class="contact-label">Почта</span>
-      <a class="contact-val" href="mailto:shukhratbakiyev@gmail.com">shukhratbakiyev@gmail.com <span class="arrow">↗</span></a>
-    </div>
-    <div class="contact-item">
+      <span class="contact-val">shukhratbakiyev@gmail.com <span class="arrow">↗</span></span>
+    </a>
+    <a class="contact-item" href="https://www.linkedin.com/in/bakiev28sh/" target="_blank" rel="noopener">
       <span class="contact-label">LinkedIn</span>
-      <a class="contact-val" href="https://www.linkedin.com/in/bakiev28sh/" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
-    </div>
-    <div class="contact-item">
+      <span class="contact-val">bakiev28sh <span class="arrow">↗</span></span>
+    </a>
+    <a class="contact-item" href="https://github.com/bakiev28" target="_blank" rel="noopener">
       <span class="contact-label">GitHub</span>
-      <a class="contact-val" href="https://github.com/bakiev28" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
-    </div>
+      <span class="contact-val">bakiev28 <span class="arrow">↗</span></span>
+    </a>
   </div>
 </section>
 
@@ -207,24 +283,65 @@
 </footer>
 
 <script>
+  // Hero image fallback (monogram) if the photo fails to load
   const img = document.getElementById('heroImg');
   img.onerror = function(){
-    const canvas = document.createElement('canvas');
-    canvas.width = 260; canvas.height = 260;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#1e1e1e';
-    ctx.fillRect(0,0,260,260);
-    ctx.fillStyle = '#b8a98a';
-    ctx.font = '500 64px Inter,system-ui,sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('ШБ', 130, 130);
-    img.src = canvas.toDataURL();
+    const c = document.createElement('canvas');
+    c.width = 300; c.height = 300;
+    const ctx = c.getContext('2d');
+    const g = ctx.createLinearGradient(0,0,300,300);
+    g.addColorStop(0,'#1e1e22'); g.addColorStop(1,'#2a2620');
+    ctx.fillStyle = g; ctx.fillRect(0,0,300,300);
+    ctx.fillStyle = '#cdb98f';
+    ctx.font = '600 96px "Space Grotesk",system-ui,sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('ШБ', 150, 156);
+    img.onerror = null; img.src = c.toDataURL();
   };
 
-  const hero = document.getElementById('hero');
-  const uploaded = sessionStorage.getItem('heroPhoto');
-  if(uploaded){ document.getElementById('heroImg').src = uploaded; }
+  // Scroll progress + sticky nav state
+  const nav = document.getElementById('nav');
+  const progress = document.getElementById('progress');
+  const onScroll = () => {
+    const h = document.documentElement;
+    const sc = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (sc * 100) + '%';
+    nav.classList.toggle('scrolled', h.scrollTop > 20);
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if(e.isIntersecting){
+        e.target.style.transitionDelay = (e.target.dataset.delay || (i % 4) * 60) + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Animate skill bars when the about section appears
+  const skillIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.skill-bar i').forEach(b => b.style.width = b.dataset.w);
+        skillIO.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.3});
+  document.querySelectorAll('.skills-block').forEach(el => skillIO.observe(el));
+
+  // Spotlight follow on project cards
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', (ev) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+    });
+  });
 </script>
 
 </body>
